@@ -1,6 +1,8 @@
-# Pet Store Vector Search Demo with Oracle Database and GraalVM
+# Pet Store Vector Search Demo with Oracle AI Database and GraalVM
 
 A Spring Boot application built with GraalVM that demonstrates semantic search using Oracle Vector Store and OpenAI embeddings.
+
+Find full details in a [blog post](https://medium.com/oracledevs/fast-ai-search-with-graalvm-spring-boot-and-oracle-database-4e8ba46c9a74). 
 
 ## Prerequisites
 
@@ -75,6 +77,8 @@ Update `application.properties` with the local connection details and run the ap
 
 ## Performance with GraalVM Native Image
 
-- **Startup**: ~1.4 seconds 🚀
+- **Startup**: ~1.5 seconds 🚀
 - **Package size**: ~107 MB standalone executable
 - **Memory**: Significantly lower ☁️
+
+Native Image compiles your Spring Boot application ahead-of-time into a self-contained executable with faster startup (typically 20-30x), lower memory footprint (typically 3-5x), and compact deployment.
