@@ -18,7 +18,7 @@
 
 	<properties>
 		<java.version>25</java.version>
-		<spring-ai.version>1.0.0-M5</spring-ai.version>
+		<spring-ai.version>1.1.4</spring-ai.version>
 		<oracle-ucp.version>26.0.0</oracle-ucp.version>
 	</properties>
 
@@ -42,12 +42,12 @@
 
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
-			<artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+			<artifactId>spring-ai-starter-model-openai</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
-			<artifactId>spring-ai-oracle-store-spring-boot-starter</artifactId>
+			<artifactId>spring-ai-starter-vector-store-oracle</artifactId>
 		</dependency>
 
 		<dependency>
@@ -62,17 +62,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 
 	<build>
 		<plugins>

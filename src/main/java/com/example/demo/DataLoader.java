@@ -26,16 +26,40 @@ public class DataLoader implements ApplicationRunner {
         log.info("Loading initial pet inventory data...");
 
         List<Document> inventory = List.of(
-                new Document("Labrador Bark Control Chews", Map.of("price", 15, "type", "health", "animal", "dog")),
-                new Document("Heavy Duty Rope for Large Dog Breeds",
-                        Map.of("price", 12, "type", "toy", "animal", "dog")),
-                new Document("Silent Laser Pointer for Kittens", Map.of("price", 8, "type", "toy", "animal", "cat")),
-                new Document("Hair brush for Long Hair Cats", Map.of("price", 5, "type", "tool", "animal", "cat")),
-                new Document("Fish Tank for Small Fish", Map.of("price", 48, "type", "habitat", "animal", "fish")),
-                new Document("Gourmet Tuna Soufflé for Sphynx Cats",
-                        Map.of("price", 18, "type", "food", "animal", "cat")),
-                new Document("Gourmet Chicken Soup for Senior Cats",
-                        Map.of("price", 12, "type", "food", "animal", "cat")));
+                product("Labrador Bark Control Chews", 15, "health", "dog"),
+                product("Heavy Duty Rope for Large Dog Breeds", 12, "toy", "dog"),
+                product("Grain-Free Beef Dog Food for Active Dogs", 24, "food", "dog"),
+                product("Salmon and Brown Rice Dog Food", 22, "food", "dog"),
+                product("Turkey and Sweet Potato Dog Food", 21, "food", "dog"),
+                product("Peanut Butter Training Treats for Dogs", 9, "food", "dog"),
+                product("Dental Stick Chews for Small Dogs", 13, "health", "dog"),
+                product("Chicken Jerky Bites for Dogs", 11, "food", "dog"),
+                product("Squeaky Tennis Ball Pack for Dogs", 10, "toy", "dog"),
+                product("Rubber Flying Disc for Dogs", 14, "toy", "dog"),
+                product("Deshedding Brush for Double-Coat Dogs", 16, "tool", "dog"),
+                product("Cooling Dog Mat for Summer Travel", 28, "habitat", "dog"),
+
+                product("Silent Laser Pointer for Kittens", 8, "toy", "cat"),
+                product("Hair brush for Long Hair Cats", 5, "tool", "cat"),
+                product("Gourmet Tuna Soufflé for Sphynx Cats", 18, "food", "cat"),
+                product("Gourmet Chicken Soup for Senior Cats", 12, "food", "cat"),
+                product("Indoor Chicken and Rice Cat Food", 19, "food", "cat"),
+                product("Salmon Pate Wet Cat Food", 17, "food", "cat"),
+                product("Catnip Mouse Toy for House Cats", 7, "toy", "cat"),
+                product("Feather Wand Toy for Curious Cats", 9, "toy", "cat"),
+                product("Crunchy Dental Treats for Cats", 8, "health", "cat"),
+                product("Urinary Support Chews for Cats", 14, "health", "cat"),
+                product("Self-Cleaning Slicker Brush for Cats", 13, "tool", "cat"),
+                product("Window Perch for Indoor Cats", 32, "habitat", "cat"),
+
+                product("Fish Tank for Small Fish", 48, "habitat", "fish"),
+                product("Tropical Flake Food for Community Fish", 6, "food", "fish"),
+                product("Sinking Pellets for Goldfish", 7, "food", "fish"),
+                product("Aquarium Water Conditioner for Freshwater Fish", 11, "health", "fish"),
+                product("Decorative Cave for Betta Fish", 15, "habitat", "fish"),
+                product("Quiet Bubble Filter for Fish Tanks", 22, "habitat", "fish"),
+                product("Floating Thermometer for Fish Tanks", 6, "tool", "fish"),
+                product("Fine Mesh Net for Aquarium Fish", 5, "tool", "fish"));
 
         vectorStore.add(inventory);
 
@@ -45,5 +69,9 @@ public class DataLoader implements ApplicationRunner {
                 doc.getMetadata().get("type")));
 
         log.info("Successfully loaded {} products into vector store", inventory.size());
+    }
+
+    private static Document product(String name, int price, String type, String animal) {
+        return new Document(name, Map.of("price", price, "type", type, "animal", animal));
     }
 }
