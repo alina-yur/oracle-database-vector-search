@@ -23,8 +23,6 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        log.info("Loading initial pet inventory data...");
-
         List<Document> inventory = List.of(
                 product("Labrador Bark Control Chews", 15, "health", "dog"),
                 product("Heavy Duty Rope for Large Dog Breeds", 12, "toy", "dog"),
@@ -62,11 +60,6 @@ public class DataLoader implements ApplicationRunner {
                 product("Fine Mesh Net for Aquarium Fish", 5, "tool", "fish"));
 
         vectorStore.add(inventory);
-
-        inventory.forEach(doc -> log.info("Successfully loaded item '{}', ${}, {}, into vector store",
-                doc.getText(),
-                doc.getMetadata().get("price"),
-                doc.getMetadata().get("type")));
 
         log.info("Successfully loaded {} products into vector store", inventory.size());
     }

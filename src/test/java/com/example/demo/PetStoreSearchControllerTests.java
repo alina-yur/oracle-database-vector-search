@@ -77,6 +77,46 @@ class PetStoreSearchControllerTests {
 		assertThat(vectorStore.requests()).containsExactly(request("find food", filter(null, "food")));
 	}
 
+	@Test
+	void recognizesPluralHabitatKeywordsForFishQueries() {
+		var responses = new LinkedHashMap<SearchRequest, List<Document>>();
+		responses.put(request("fish tanks", filter("fish", "habitat")), List.of(
+				new Document("Fish Tank for Small Fish"),
+				new Document("Quiet Bubble Filter for Fish Tanks")));
+		responses.put(request("do you have fish aquariums", filter("fish", "habitat")), List.of(
+				new Document("Fish Tank for Small Fish"),
+				new Document("Quiet Bubble Filter for Fish Tanks")));
+
+		var vectorStore = new StubVectorStore(responses);
+		var controller = new PetStoreSearchController(vectorStore);
+
+		assertThat(controller.search("fish tanks"))
+				.containsExactly("Fish Tank for Small Fish", "Quiet Bubble Filter for Fish Tanks");
+		assertThat(controller.search("do you have fish aquariums"))
+				.containsExactly("Fish Tank for Small Fish", "Quiet Bubble Filter for Fish Tanks");
+		assertThat(vectorStore.requests()).containsExactly(
+				request("fish tanks", filter("fish", "habitat")),
+				request("do you have fish aquariums", filter("fish", "habitat")));
+	}
+
+	@Test
+	void returnsStructuredProductResultsForTheUi() {
+		var responses = new LinkedHashMap<SearchRequest, List<Document>>();
+		responses.put(request("dog toys", filter("dog", "toy")), List.of(
+				new Document("Heavy Duty Rope for Large Dog Breeds",
+						Map.of("price", 12, "type", "toy", "animal", "dog")),
+				new Document("Rubber Flying Disc for Dogs",
+						Map.of("price", 14, "type", "toy", "animal", "dog"))));
+
+		var vectorStore = new StubVectorStore(responses);
+		var controller = new PetStoreSearchController(vectorStore);
+
+		assertThat(controller.searchProducts("dog toys")).containsExactly(
+				new PetStoreSearchController.ProductResult("Heavy Duty Rope for Large Dog Breeds", 12, "toy", "dog"),
+				new PetStoreSearchController.ProductResult("Rubber Flying Disc for Dogs", 14, "toy", "dog"));
+		assertThat(vectorStore.requests()).containsExactly(request("dog toys", filter("dog", "toy")));
+	}
+
 	private static SearchRequest request(String query, org.springframework.ai.vectorstore.filter.Filter.Expression filterExpression) {
 		var builder = SearchRequest.builder()
 				.query(query)

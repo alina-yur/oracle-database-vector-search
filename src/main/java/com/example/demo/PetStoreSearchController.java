@@ -24,43 +24,27 @@ public class PetStoreSearchController {
             Map.entry("cat", "cat"),
             Map.entry("cats", "cat"),
             Map.entry("kitten", "cat"),
-            Map.entry("kittens", "cat"),
-            Map.entry("feline", "cat"),
             Map.entry("dog", "dog"),
             Map.entry("dogs", "dog"),
             Map.entry("puppy", "dog"),
-            Map.entry("puppies", "dog"),
-            Map.entry("canine", "dog"),
             Map.entry("fish", "fish"),
-            Map.entry("fishes", "fish"),
-            Map.entry("aquatic", "fish"));
+            Map.entry("fishes", "fish"));
     private static final Map<String, String> TYPE_KEYWORDS = Map.ofEntries(
             Map.entry("food", "food"),
             Map.entry("foods", "food"),
-            Map.entry("meal", "food"),
-            Map.entry("meals", "food"),
             Map.entry("treat", "food"),
             Map.entry("treats", "food"),
-            Map.entry("snack", "food"),
-            Map.entry("snacks", "food"),
             Map.entry("toy", "toy"),
             Map.entry("toys", "toy"),
-            Map.entry("rope", "toy"),
             Map.entry("laser", "toy"),
-            Map.entry("pointer", "toy"),
             Map.entry("brush", "tool"),
-            Map.entry("brushes", "tool"),
-            Map.entry("comb", "tool"),
-            Map.entry("groom", "tool"),
             Map.entry("grooming", "tool"),
             Map.entry("tank", "habitat"),
-            Map.entry("habitat", "habitat"),
+            Map.entry("tanks", "habitat"),
             Map.entry("aquarium", "habitat"),
+            Map.entry("aquariums", "habitat"),
             Map.entry("health", "health"),
-            Map.entry("chew", "health"),
-            Map.entry("chews", "health"),
-            Map.entry("supplement", "health"),
-            Map.entry("supplements", "health"));
+            Map.entry("supplement", "health"));
 
     private final VectorStore vectorStore;
 
@@ -70,16 +54,25 @@ public class PetStoreSearchController {
 
     @GetMapping("/search")
     public List<String> search(@RequestParam String query) {
+        return searchDocuments(query).stream()
+                .map(Document::getText)
+                .toList();
+    }
+
+    @GetMapping("/search/products")
+    public List<ProductResult> searchProducts(@RequestParam String query) {
+        return searchDocuments(query).stream()
+                .map(ProductResult::from)
+                .toList();
+    }
+
+    private List<Document> searchDocuments(String query) {
         SearchIntent intent = SearchIntent.fromQuery(query);
-        List<Document> results = buildSearchRequests(query, intent).stream()
+        return buildSearchRequests(query, intent).stream()
                 .map(this.vectorStore::similaritySearch)
                 .filter(found -> !found.isEmpty())
                 .findFirst()
                 .orElse(List.of());
-
-        return results.stream()
-                .map(Document::getText)
-                .toList();
     }
 
     private List<SearchRequest> buildSearchRequests(String query, SearchIntent intent) {
@@ -141,6 +134,35 @@ public class PetStoreSearchController {
                     .filter(Objects::nonNull)
                     .findFirst()
                     .orElse(null);
+        }
+
+    }
+
+    public record ProductResult(String name, Integer price, String type, String animal) {
+
+        private static ProductResult from(Document document) {
+            Map<String, Object> metadata = document.getMetadata() == null ? Map.of() : document.getMetadata();
+            return new ProductResult(document.getText(), integerValue(metadata.get("price")),
+                    stringValue(metadata.get("type")), stringValue(metadata.get("animal")));
+        }
+
+        private static String stringValue(Object value) {
+            return value == null ? null : value.toString();
+        }
+
+        private static Integer integerValue(Object value) {
+            if (value instanceof Number number) {
+                return number.intValue();
+            }
+            if (value instanceof String text) {
+                try {
+                    return Integer.parseInt(text);
+                }
+                catch (NumberFormatException ignored) {
+                    return null;
+                }
+            }
+            return null;
         }
 
     }

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Pet Store</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script src="/js/app.js" defer></script>
+</head>
+<body>
+<div class="page-shell">
+    <main class="layout">
+        <section class="showcase card">
+            <header class="showcase-nav">
+                <div class="showcase-brand">
+                    <div class="brand-mark" aria-hidden="true">PS</div>
+                    <span class="brand-name">Vector Pet Store</span>
+                </div>
+
+                <nav class="nav-links" aria-label="Site">
+                    <a href="#top">Home</a>
+                    <a href="#results-section">Catalog</a>
+                    <a href="#results-section">Search</a>
+                </nav>
+
+                <div class="nav-status">Spring Demo</div>
+            </header>
+
+            <div class="nav-rule" aria-hidden="true"></div>
+
+            <div class="hero-grid" id="top">
+                <div class="hero-copy">
+                    <p class="section-label">Semantic Search</p>
+                    <h1>The best items for your pets!</h1>
+                    <p class="hero-text">Search food, toys, and everyday essentials!</p>
+
+                    <form id="search-form" class="search-form">
+                        <label class="sr-only" for="search-input">Search the pet catalog</label>
+                        <div class="search-input-shell">
+                            <input id="search-input" name="query" type="search" placeholder="What are you looking for?" autocomplete="off">
+                            <span class="search-icon" aria-hidden="true">⌕</span>
+                        </div>
+                        <button id="search-button" type="submit">Search</button>
+                    </form>
+
+                    <div class="suggestions" aria-label="Suggested searches">
+                        <button type="button" class="suggestion-pill" data-query="cat food">Cat food</button>
+                        <button type="button" class="suggestion-pill" data-query="dog toys">Dog toys</button>
+                        <button type="button" class="suggestion-pill" data-query="fish tanks">Fish tanks</button>
+                        <button type="button" class="suggestion-pill" data-query="treats for small dogs">Small dog treats</button>
+                    </div>
+                </div>
+
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="photo-stage">
+                        <img class="hero-photo" src="/images/hero-dog.png" alt="" width="1912" height="1272" fetchpriority="high">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-section" id="results-section">
+            <div class="results-header">
+                <div>
+                    <p class="section-label">Results</p>
+                    <h2 id="results-title">Loading results</h2>
+                </div>
+                <p id="results-summary" class="results-summary">Loading products.</p>
+            </div>
+
+            <div id="results-grid" class="results-grid" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <noscript>
+        <div class="noscript card">
+            JavaScript is required for the demo search UI.
+        </div>
+    </noscript>
+</div>
+</body>
+</html>

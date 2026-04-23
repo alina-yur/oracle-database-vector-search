@@ -2,6 +2,8 @@
 
 A Spring Boot application built with GraalVM that demonstrates semantic search using Oracle Vector Store and OpenAI embeddings.
 
+GitHub: [alina-yur/oracle-database-vector-search](https://github.com/alina-yur/oracle-database-vector-search)
+
 Find full details in a [blog post](https://medium.com/oracledevs/fast-ai-search-with-graalvm-spring-boot-and-oracle-database-4e8ba46c9a74).
 
 ## Prerequisites
